@@ -1,0 +1,91 @@
+---
+title: "My awesome website"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cerulean
+---
+
+## Profile
+
+Hello! My name is Jiacheng Wu. I am a first year student at the Mailman School of Public Health and I am a biostatistics major. 
+
+Here is a link to my [resume](about.html)
+
+Here is link to my [github account](https://github.com/jw4183) 
+
+Here is a link to my [email](https://outlook.office365.com/mail/inbox/id/AAQkADcyN2E0YmJjLWFmMDYtNDYxMi1iZDJjLTY2ODllNmRiZTlmNgAQALDs5cRfQZ9OjCchCY12Ry0%3D)
+
+
+```{r setup, message=FALSE}
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+library(ggplot2)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+```{r}
+data("instacart")
+```
+
+Choose a sample from all the instacart orders. I use the items that have been reordered at least once and the last orders were within a week. I also limited the items with product_id less than 2000 and aisle_id less than 50 to make the sample the appropriate size.
+
+```{r}
+instacart_df = 
+  instacart  %>% 
+  filter(reordered == 1,
+         days_since_prior_order < 8,
+         aisle_id < 50,
+         product_id < 2000
+  )
+```
+
+## Barplot of number of orders (at least 100) against aisles.
+
+```{r}
+instacart_df %>% 
+  count(aisle, name = "n_of_orders") %>% 
+  arrange(desc(n_of_orders)) %>% 
+  filter(n_of_orders >= 100) %>% 
+  plot_ly(
+    x = ~aisle, y = ~n_of_orders, color = ~aisle, type = "bar",
+    colors = "viridis"
+  )
+```
+
+## Boxplot of the order(nth) of which the item is added each time for items with product id < 100. 
+
+```{r,fig.width=10}
+instacart_df %>% 
+  filter(product_id < 100) %>% 
+  plot_ly(x = ~product_name, y = ~add_to_cart_order, color = ~product_name, type = "box", colors = "viridis")
+```
+
+## Scatterplot of product id against aisle id.
+
+```{r}
+instacart_df %>% 
+  mutate(text_label = str_c("ProductName:", product_name)) %>% 
+  plot_ly(x = ~product_id, y = ~aisle_id, type = "scatter", mode = "markers",
+          color = ~aisle_id, text = ~text_label, alpha = .5)
+```
+
+
+
