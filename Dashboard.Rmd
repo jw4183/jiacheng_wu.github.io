@@ -37,7 +37,7 @@ scale_fill_discrete = scale_fill_viridis_d
 data("instacart")
 ```
 
-Choose a sample from all the instacart orders. I use the items that have been reordered at least once and the last orders were within a week. I also limited the items with product_id less than 2000 and aisle_id less than 50 to make the sample the appropriate size.
+A sample from the available instacart order dataset. I use the items that have been reordered at least once and the last orders were within a week. I also limited the items with product_id less than 2000 and aisle_id less than 50 to make the sample the appropriate size.
 
 ```{r}
 instacart_df = 
@@ -49,7 +49,7 @@ instacart_df =
   )
 ```
 
-## Barplot of number of orders (at least 100) against aisles.
+## Chart A: Barplot of number of orders (at least 100) against aisles.
 
 ```{r}
 instacart_df %>% 
@@ -62,7 +62,7 @@ instacart_df %>%
   )
 ```
 
-## Boxplot of the order(nth) of which the item is added each time for items with product id < 100. 
+## Chart B: Boxplot of the order(nth) of which the item is added each time for items with product id < 100.
 
 ```{r,fig.width=10}
 instacart_df %>% 
@@ -70,7 +70,7 @@ instacart_df %>%
   plot_ly(x = ~product_name, y = ~add_to_cart_order, color = ~product_name, type = "box", colors = "viridis")
 ```
 
-## Scatterplot of product id against aisle id.
+## Chart C: Scatterplot of product id against aisle id.
 
 ```{r}
 instacart_df %>% 
